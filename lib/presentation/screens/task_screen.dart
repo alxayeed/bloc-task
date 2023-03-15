@@ -1,16 +1,10 @@
+import 'package:bloc_task/blocs/bloc_imports.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/task.dart';
 
 class TaskScreen extends StatelessWidget {
-  TaskScreen({Key? key}) : super(key: key);
-
-  final List<Task> allTask = [
-    Task(id: "id1", title: "Task 1"),
-    Task(id: "id2", title: "Task 2"),
-    Task(id: "id3", title: "Task 3"),
-    Task(id: "id4", title: "Task 4"),
-  ];
+  const TaskScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +24,22 @@ class TaskScreen extends StatelessWidget {
               child: Chip(label: Text('Tasks')),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: allTask.length,
-                itemBuilder: (context, index) {
-                  Task task = allTask[index];
-                  return ListTile(
-                    title: Text(task.title),
-                    trailing: Checkbox(
-                      value: false,
-                      onChanged: (bool? value) {},
-                    ),
+              child: BlocBuilder<TaskBloc, TaskState>(
+                builder: (context, state) {
+                  List<Task> allTask = state.allTask;
+
+                  return ListView.builder(
+                    itemCount: allTask.length,
+                    itemBuilder: (context, index) {
+                      Task task = allTask[index];
+                      return ListTile(
+                        title: Text(task.title),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: (bool? value) {},
+                        ),
+                      );
+                    },
                   );
                 },
               ),
